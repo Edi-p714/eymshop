@@ -15,5 +15,18 @@ session_start();
         <!-- Benutzer ist NICHT eingeloggt -->
         <a href="login.php">Login</a>
         <a href="register.php">Registrieren</a>
+    <ul class="nav-menu">
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Kategorie</a></li>
+        <li><a href="#">Anmeldung</a></li>
+        <li><a href="#">Warenkorb</a></li>
+        <li><a href="#">Über uns</a></li>
+        <li><a href="#">Kontakt</a></li>
+    </ul>
+
+
+
+
+
     <?php endif; ?>        
 </nav>
