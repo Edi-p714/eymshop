@@ -1,0 +1,146 @@
+/* Register Styles */
+
+.register-page {
+    max-width: 500px;
+    margin: 40px auto;
+    padding: 40px;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(230, 168, 179, 0.2);
+    border: 1px solid rgba(230, 168, 179, 0.3);
+}
+
+.register-title {
+    text-align: center;
+    color: #333;
+    margin-bottom: 10px;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.register-subtitle {
+    text-align: center;
+    color: #666;
+    margin-bottom: 30px;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+/* Messages */
+.success-message {
+    background: #d4edda;
+    color: #155724;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    text-align: center;
+    border-left: 4px solid #28a745;
+}
+
+.error-message {
+    background: #f8d7da;
+    color: #721c24;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    text-align: center;
+    border-left: 4px solid #dc3545;
+}
+
+/* Form */
+.register-form {
+    margin-top: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #333;
+    font-weight: 600;
+    font-size: 15px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 14px;
+    border: 2px solid #e6e6e6;
+    border-radius: 10px;
+    font-size: 15px;
+    background-color: #f9f9f9;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #e6a8b3;
+    background-color: #fff;
+}
+
+.password-hint {
+    font-size: 13px;
+    color: #666;
+    margin-top: 5px;
+}
+
+/* Terms */
+.terms-group {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin: 25px 0;
+}
+
+.terms-group input[type="checkbox"] {
+    margin-top: 3px;
+    accent-color: #e6a8b3;
+}
+
+/* Button */
+.register-btn {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, #f8c7cc 0%, #e6a8b3 100%);
+    border: none;
+    border-radius: 10px;
+    color: #000;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.register-btn:hover {
+    background: linear-gradient(135deg, #e6a8b3 0%, #d4a5b5 100%);
+}
+
+/* Login Link */
+.login-link {
+    text-align: center;
+    margin-top: 25px;
+    padding-top: 25px;
+    border-top: 1px solid #eee;
+}
+
+.login-link a {
+    color: #e6a8b3;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.login-link a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .register-page {
+        padding: 30px;
+        margin: 20px;
+    }
+    
+    .register-title {
+        font-size: 24px;
+    }
+}

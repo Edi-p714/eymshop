@@ -45,4 +45,78 @@ if ($stmt->execute()) {
 } else {
     die("Fehler beim Registrieren. Bitte später erneut versuchen.");
 }
-?>
+?><?php
+// Fehler anzeigen
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+// Starte Session
+session_start();
+
+// Datenbankverbindung
+require_once '../includes/db.php';
+
+// Nur POST-Anfragen
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Hole Daten
+    $name = trim($_POST['name'] ?? '');
+    $email = trim($_POST['email'] ?? '');
+    $passwort = $_POST['passwort'] ?? '';
+    $passwort_confirm = $_POST['passwort_confirm'] ?? '';
+    $terms = isset($_POST['terms']) ? true : false;
+    
+    // Validierung
+    if (empty($name) || empty($email) || empty($passwort) || empty($passwort_confirm)) {
+        header("Location: register.php?error=empty");
+        exit;
+    }
+    
+    if (!$terms) {
+        header("Location: register.php?error=terms");
+        exit;
+    }
+    
+    if (strlen($passwort) < 6) {
+        header("Location: register.php?error=password");
+        exit;
+    }
+    
+    if ($passwort !== $passwort_confirm) {
+        header("Location: register.php?error=password_mismatch");
+        exit;
+    }
+    
+    try {
+        // Prüfe E-Mail
+        $stmt = $conn->prepare("SELECT benutzer_id FROM benutzer WHERE email = ?");
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        
+        if ($result->num_rows > 0) {
+            header("Location: register.php?error=email_exists");
+            exit;
+        }
+        
+        // Passwort hashen
+        $hash = password_hash($passwort, PASSWORD_DEFAULT);
+        
+        // Benutzer speichern
+        $stmt = $conn->prepare("INSERT INTO benutzer (vorname, email, passwort) VALUES (?, ?, ?)");
+        $stmt->bind_param("sss", $name, $email, $hash);
+        
+        if ($stmt->execute()) {
+            header("Location: login.php?success=1");
+            exit;
+        } else {
+            header("Location: register.php?error=database");
+            exit;
+        }
+    } catch (Exception $e) {
+        header("Location: register.php?error=database");
+        exit;
+    }
+} else {
+    header("Location: register.php");
+    exit;
+}
