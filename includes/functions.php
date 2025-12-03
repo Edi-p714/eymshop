@@ -110,5 +110,129 @@ function clearCart() {
 function getCart() {
     return $_SESSION['cart'] ?? [];
 }
+
+// -----------------------------------------------------------------------------
+// HILFSFUNKTIONEN FÜR WARENKORB & BESTELLUNG
+// -----------------------------------------------------------------------------
+/** 
+* Holt alle Produkte zu einer Liste von produkt_id-Werten. 
+* Rückgabe: assoziatives Array [produkt_id => produkt-row] 
+*/
+function getProductsByIds(mysqli $conn, array $ids): array {
+    if (empty($ids)) {
+        return [];
+    }
+
+    //IDs sicher in eine IN-Listen konvertieren
+    $cleanIds = array_map('intval', $ids);
+    $inList = implode(',', $cleanIds);
+
+    $sql = "SELECT * FROM produkte WHERE produkt_id IN ($inList)";
+
+    $produkte = [];
+    while ($row = $result->fetch_assoc()) {
+        $produkte[$row['produkt_id']] = $row;
+    }
+
+    return $produkte;
+}
+
+/**
+ * Berechnet die Gesamtsumme des Warenkorbs.
+ * Erwartet: $cart = [produk_id => menge]
+ */
+function calculateCartTotal(mysqli $conn, array $cart): float {
+    $total = 0.0;
+
+    if (empty($cart)) {
+        return $total;
+    }
+
+    $produkte = getProductsByIds($conn, array_keys($cart));
+
+    foreach ($cart as $produktId => $menge) {
+        if (isset($produkte[$produktId])) {
+            $preis = (float) $produkte[$produktId]['preis'];
+            $total += $preis * (int) $menge;
+        }
+    }
+
+    return $total;
+}
+
+/**
+ * Legt eine neue Bestellung an und speichert Bestellpositionen.
+ * Erwartet:
+ * - $benutzerId = ID des eingeloggten Benutzers
+ * - $cart:  [produkt_id =>menge]
+ * - $produkte: [produkt_id => produkt-row] (z.B aus getProductsByIds)
+ * 
+ * Rückgabe:
+ * - bestell_id (int) bei Erfolg
+ * - null bei Fehler
+ */
+function createOrder(mysqli $conn, int $benutzerId, array $cart, array $produkte): ?int {
+    if (emty($cart)) {
+        return null;
+    }
+
+    // Gesamtpreis berechnen
+    $gesamtpreis = 0.0;
+    foreach ($cart as $produktId => $menge) {
+        if (!isset($produkte[$produktId])) {
+            continue;
+        }
+        $preis = (float) $produkte[$produktId]['preis'];
+        $gesamtpreis += $preis * (int) $menge;
+    }
+
+    // Bestellung in "bestellungen" einfügen
+    $stmtBestellung = $conn->prepare("
+    INSERT INTO bestellungen (benutzer_id, Gesamtpreis, erstellt_am)
+    VALUES (?, ? NOW())
+    ");
+    if (!$stmtBestellung) {
+        return null;
+    }
+
+    $stmtBestellung->bind_param("id", $benutzerld, $gesamtpreis);
+
+    if (!$stmtBestellung->execute()) {
+        $stmtBestellung->close();
+        return null;
+    }
+
+    $besttellId = $stmtBestellung->insert_id;
+    $stmtBestellung->close();
+
+    // Bestellpositionen in "bestellpositionen" einfügen
+    $stmtPosition = $conn->prepare("
+    INSERT INTO bestellpositionen (bestell_id, produkt_id, MENGE, Stueckpreis)
+    VALUES (?,?,?,?)
+    ");
+    if (!$stmtPosition) {
+        return null;
+    }
+
+    foreach ($cart as $produktId => $menge) {
+        if (!isset($produkte[$produktId])) {
+            continue;
+        }
+
+        $preis = (float) $produkte[$produktId]['preis'];
+    $mengeInt = (int) $menge;
+
+    $stmtPosition->bind_param("iiid", $bestellId, $produktId, $mengeInt, $preis);
+    $stmtPosition->execute(); // einfache Fehlerbehanglung reicht hier für das projekt
+    }
+
+    $stmtPosition->close();
+
+    return $bestellId;
+}
+
+
+
+
 ?>
 
