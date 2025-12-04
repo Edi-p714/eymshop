@@ -17,39 +17,40 @@
     <!-- PRODUCTS -->
     <div class="products-section">
 
+      
+        
         <div class="product-card">
             <div class="product-image">
-                <img src="../assets/image/herren-Hose.png" alt="Herren Jeanshose">
+                <img src="../assets/image/männer.jpeg" alt="Herren">
             </div>
-            <div class="product-title">Herren Jeanshose</div>
-            <div class="product-type">Hosen</div>
+            <div class="product-title">Herren</div>
+            <div class="product-type"></div>
         </div>
 
         <div class="product-card">
             <div class="product-image">
-                <img src="../assets/image/herren-tshirt.jpeg" alt="Herren T-Shirt">
+                <img src="../assets/image/Frauen..jpeg" alt="damen">
             </div>
-            <div class="product-title">Herren T-Shirt</div>
-            <div class="product-type">T-Shirt</div>
+            <div class="product-title">Damen</div>
+            <div class="product-type"></div>
         </div>
+
+      
 
         <div class="product-card">
             <div class="product-image">
-                <img src="../assets/image/damen-hose.png" alt="Damen Hose">
+                <img src="../assets/image/mädchen.jpeg" alt="mädchen">
             </div>
-            <div class="product-title">Damen Hose</div>
-            <div class="product-type">Hosen</div>
+            <div class="product-title">Mädchen</div>
+            <div class="product-type"></div>
         </div>
 
-        <div class="product-card">
-            <div class="product-image">
-                <img src="../assets/image/damen-tschirt.png" alt="Mädchen T-Shirt">
-            </div>
-            <div class="product-title">Mädchen T-Shirt</div>
-            <div class="product-type">T-Shirt</div>
-        </div>
+        
+        
 
-    </div>
+        
+
+   
 
 </div>
 

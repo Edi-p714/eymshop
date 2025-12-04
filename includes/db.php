@@ -10,7 +10,7 @@ Datenbank: Eymshop
 
 $servername = 'localhost';
 $username = 'root';
-$password = 'root';
+$password = '';
 $dbname = "Eymshop";
 
 // Verbindung herstellen
