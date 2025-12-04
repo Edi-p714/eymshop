@@ -13,7 +13,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Prüfen, ob Benutzer eingeloggt ist
+// Benutzer eingeloggt-Check
 if (!isset($_SESSION['benutzer_id'])) {
     // Falls du einen anderen key verwendest (z.B user_id), hier anpassen
     header('Location: login.php');
@@ -22,30 +22,25 @@ if (!isset($_SESSION['benutzer_id'])) {
 
 $benutzerId = (int) $_SESSION['benutzer-id'];
 
-// Aktuellen zum Warenkorb 
-$produkte = getProductsByIds($conn, array_keys($cart));
-$gesamt = calculateCartTotal($conn, $cart);
-
-if (!isset($_SESSION['benutzer_id'])) {
-    die("Bitte zuerst einloggen.");
-}
-
-$benutzer_id = $_SESSION['benutzer_id'];
-
-// Warenkorb Prüfen
+// Warenkorb holen
 $cart = getCart();
+
 if (empty($cart)) {
-    die("Warenkorb ist leer.");
+    echo "<h2>Ihr Warenkorb ist leer.</h2>";
+    require_once '../includes/footer.php';
+    exit();
 }
 
-// Gesamtpreis berechnen
-$gesamtpreis = calculateTotal($conn);
+// Produkte anhand der IDs laden (für Preis, Name usw.)
+$produkte = getProductsByIds($conn, array_keys($cart));
 
-// Bestellung speicher
-$bestell_id = createOrder($conn, $benutzer_id, $gesamtpreis);
-
-// Positionen speichern
-saveOrderItems($conn, $bestell_id);
+// Bestellung anlagen (intkl. Bestellpositionen)
+$bestell_id = createOrder($conn, $benutzer_id, $cart, $gesamtpreis);
+if ($bestell_id === null) {
+    echo "<h2>Fehler: Bestellung konnte nicht gespeichert werden.</h2>";
+    require_once '../includes/footer.php';
+    exit();
+}
 
 // Warenkorb leerem
 clearCart();
@@ -53,12 +48,10 @@ clearCart();
 
 <h2>Vielen Dank für Ihre Bestellung!</h2>
 
-<p>Ihre Bestellnummer lautet: <strong><?php echo $bestell_id; ?></strong></p>
+<p>Ihre Bestellnummer lautet: <strong><?php echo (int)$bestell_id; ?></strong></p>
 
-<p>Gesamtpreis: <strong><?php echo number_format($gesamtpreis, 2, ',', '.'); ?> €</strong></p>
-
-<p>Sie erhalten eine Bestätigung per E-Mail.</p>
-
-<a href="index.php" class="btn">Zurück zur Starseite</a>
+<p>
+<a href="index.php" class="btn">weiter einkaufen</a>
+</p>
 
 <?php require_once '../includes/footer.php'; ?>
