@@ -21,7 +21,7 @@
         
         <div class="product-card">
             <div class="product-image">
-                <img src="../assets/image/männer.jpeg" alt="Herren">
+                <img src="../assets/image/menner.jpg" alt="Herren">
             </div>
             <div class="product-title">Herren</div>
             <div class="product-type"></div>
@@ -29,7 +29,7 @@
 
         <div class="product-card">
             <div class="product-image">
-                <img src="../assets/image/Frauen..jpeg" alt="damen">
+                <img src="../assets/image/Frauen.jpg" alt="damen">
             </div>
             <div class="product-title">Damen</div>
             <div class="product-type"></div>
@@ -39,7 +39,7 @@
 
         <div class="product-card">
             <div class="product-image">
-                <img src="../assets/image/mädchen.jpeg" alt="mädchen">
+                <img src="../assets/image/maedchen.jpg" alt="mädchen">
             </div>
             <div class="product-title">Mädchen</div>
             <div class="product-type"></div>
