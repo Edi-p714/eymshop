@@ -4,6 +4,9 @@ require_once '../includes/navigation.php';
 require_once '../includes/db.php';
 require_once '../includes/functions.php';
 
+if (isset($_GET['add'])) {
+    addToCart($_GET['add'], 1);
+}
 
 if (!isset($_GET['id'])) {
     die("Produkt nicht gefunden.");
@@ -41,6 +44,8 @@ if (!$produkt) {
     </ul>
     </div>
 </div>
+
+<a href="warenkorb.php?add=<?php echo $produkt_id; ?>">In den Warenkorb</a>
 
 <?php require_once '../includes/footer.php'; ?>
 
