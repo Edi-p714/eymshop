@@ -33,7 +33,7 @@ $cart = getCart();
 
     <?php $summe = 0;
     foreach ($cart as $product_id => $quantity):
-        $stmt = $conn->prepare("SELECT produkname, preis, hauptbild FROM produkte WHERE produkt_id = ?");
+        $stmt = $conn->prepare("SELECT produktname, preis, hauptbild FROM produkte WHERE produkt_id = ?");
         $stmt->bind_param("i", $product_id);
         $stmt->execute();
         $p = $stmt->get_result()->fetch_assoc();
