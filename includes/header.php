@@ -1,7 +1,7 @@
 <!-- includes/header.php -->
 <header class="header">
     <div class="logo">
-        <img src="../assets/image/logo.png" alt="Logo" class="logo-img">
+        <img src="../assets/image/logonew.png" alt="Logo" class="logo-img">
     </div>
 
     <?php include 'navigation.php'; ?>
