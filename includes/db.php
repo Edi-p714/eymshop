@@ -12,9 +12,11 @@ $servername = 'localhost';
 $username = 'root';
 $password = 'root';
 $dbname = "Eymshop";
+$port = 8889;
+
 
 // Verbindung herstellen
-$conn = new mysqli($servername, $username, $password, $dbname);
+$conn = new mysqli($servername, $username, $password, $dbname, $port);
 
 // Fehlerprüfung
 if ($conn->connect_error) {
