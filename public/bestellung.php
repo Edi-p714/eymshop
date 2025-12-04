@@ -26,77 +26,39 @@ $benutzerId = (int) $_SESSION['benutzer-id'];
 $produkte = getProductsByIds($conn, array_keys($cart));
 $gesamt = calculateCartTotal($conn, $cart);
 
-$bestellErfolg = false;
-$bestellId = null;
-
-// ------------------------------------
-// Bestellung anlegen (bei Formular-POST)
-// ------------------------------------
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_order'])) {
-    //Bestellung in DB anlagen
-    $bestellId = createOrder($conn, $benutzerId, $cart, $produkte);
-
-    if ($bestellId !== null) {
-        // Warenkorb leeren
-        clearCart();
-        $bestellErfolg = true;
-    }
+if (!isset($_SESSION['benutzer_id'])) {
+    die("Bitte zuerst einloggen.");
 }
+
+$benutzer_id = $_SESSION['benutzer_id'];
+
+// Warenkorb Prüfen
+$cart = getCart();
+if (empty($cart)) {
+    die("Warenkorb ist leer.");
+}
+
+// Gesamtpreis berechnen
+$gesamtpreis = calculateTotal($conn);
+
+// Bestellung speicher
+$bestell_id = createOrder($conn, $benutzer_id, $gesamtpreis);
+
+// Positionen speichern
+saveOrderItems($conn, $bestell_id);
+
+// Warenkorb leerem
+clearCart();
 ?>
 
-<h2>Bestellung</h2>
+<h2>Vielen Dank für Ihre Bestellung!</h2>
 
-<?php if ($bestellErfolg && $bestellId !== null): ?>
+<p>Ihre Bestellnummer lautet: <strong><?php echo $bestell_id; ?></strong></p>
 
-    <p>Vielen Dank für Ihre Bestellung!</p>
-    <p>Ihre Bestellunmmer lautet: <strong><?php echo (int) $bestellId;  ?></strong></p>
+<p>Gesamtpreis: <strong><?php echo number_format($gesamtpreis, 2, ',', '.'); ?> €</strong></p>
 
-    <p><a href="produkte.php" class="btn">Weiter einkaufen</a></p>
+<p>Sie erhalten eine Bestätigung per E-Mail.</p>
 
-<?php else: ?>
-
-    <h3>Bestellübersicht</h3>
-
-    <table border="1" cellpadding="8" cellspacing="0">
-        <thead>
-            <tr>
-                <th>Produkt</th>
-                <th>Preis</th>
-                <th>Menge</th>
-                <th>Zwischensnummer</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($cart as $produktId => $menge): ?>
-                <?php if (!isset($produkte[$produktId])) continue; ?>
-                <?php 
-                $produkt = $produkte[$produktId];
-                $preis = (float) $produkt['preis'];
-                $mengeInt = (int) $menge;
-                $subtotal = $preis * $mengeInt;
-                ?>
-                <tr>
-                    <td><?php echo htmlspecialchars($produkt['produktname']); ?></td>
-                    <td><?php echo number_format($preis, 2, ',', '.'); ?> €</td>
-                    <td><?php echo $mengeInt; ?></td>
-                    <td><?php echo number_format($subtotal, 2, ',', '.'); ?> €</td>
-                </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-
-    <p><strong>Gesamt:</strong>
-    <?php echo number_format($gesamt, 2, ',', '.'); ?> €
-    </p>
-
-    <form method="POST">
-        <p>
-            <button type="submit" name="confirm_order" class="btn">
-                Bestellung jetzt abschließen
-            </button>
-        </p>
-    </form>
-
-<?php endif; ?>
+<a href="index.php" class="btn">Zurück zur Starseite</a>
 
 <?php require_once '../includes/footer.php'; ?>

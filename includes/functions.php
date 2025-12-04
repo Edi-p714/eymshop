@@ -9,8 +9,7 @@ if (!isset($conn)) {
 // -------------------------------------------------
 // PRODUKTE LADEN
 //-------------------------------------------------
-function getAllProducts($conn) {
-    // SQL-Spaltennamen angepasst an deine Datenbank
+function getAllProducts(mysqli $conn) {
     $sql = "SELECT * FROM produkte ORDER BY produkt_id DESC";
     return $conn->query($sql);
 }
@@ -18,7 +17,7 @@ function getAllProducts($conn) {
 //-------------------------------------------------
 // PRODUKTDETAILS
 //-------------------------------------------------
-function getProductById($conn, $id) {
+function getProductById(mysqli $conn, int $id) {
     $stmt = $conn->prepare("
         SELECT *
         FROM produkte
@@ -32,7 +31,7 @@ function getProductById($conn, $id) {
 //-------------------------------------------------
 // PRODUKTE-FARBEN
 //-------------------------------------------------
-function getColorsByProduct($conn, $product_id) {
+function getColorsByProduct(mysqli $conn, int $product_id) {
     $stmt = $conn->prepare("
         SELECT farben.farb_id, farben.farbe, farben.farbcode 
         FROM lagerbestand 
@@ -46,7 +45,7 @@ function getColorsByProduct($conn, $product_id) {
 //------------------------------------------------
 // PRODUKT-GRÖßEN
 //------------------------------------------------
-function getSizesByProduct($conn, $product_id) {
+function getSizesByProduct(mysqli $conn, int $product_id) {
     $stmt = $conn->prepare("
         SELECT groessen.groessen_id, groessen.groesse 
         FROM lagerbestand 
@@ -61,7 +60,7 @@ function getSizesByProduct($conn, $product_id) {
 //------------------------------------------------
 // INVENTAR
 //------------------------------------------------
-function getInventory($conn, $product_id, $farbe_id, $groesse_id) {
+function getInventory(mysqli $conn, int $product_id, int $farbe_id, int $groesse_id) {
     $stmt = $conn->prepare("
         SELECT verfuegbare_menge 
         FROM lagerbestand 
@@ -74,7 +73,7 @@ function getInventory($conn, $product_id, $farbe_id, $groesse_id) {
 //------------------------------------------------
 // KATEGORIE-FILTER
 //------------------------------------------------
-function getProductsByCategory($conn, $categoryName) {
+function getProductsByCategory(mysqli $conn, string $categoryName) {
     $stmt = $conn->prepare("
         SELECT p.*
         FROM produkte p
@@ -87,9 +86,9 @@ function getProductsByCategory($conn, $categoryName) {
 }
 
 //------------------------------------------------
-// WARENKORB (SESSION)
+// WARENKORB (SESSION-BASIERT)
 //------------------------------------------------
-function addToCart($product_id, $quantity = 1) {
+function addToCart(int $product_id, int $quantity = 1) {
     if (!isset($_SESSION['cart'])) $_SESSION['cart'] = [];
 
     if (isset($_SESSION['cart'][$product_id])) {
@@ -99,8 +98,10 @@ function addToCart($product_id, $quantity = 1) {
     }
 }
 
-function removeFromCart($produkt_id) {
-    unset($_SESSION['cart'][$produkt_id]);
+function removeFromCart(int $produkt_id) {
+    if (isset($_SESSION['cart'][$product_id])) {
+        unset($_SESSION['cart'][$product_id]);
+    }
 }
 
 function clearCart() {
@@ -112,7 +113,7 @@ function getCart() {
 }
 
 // -----------------------------------------------------------------------------
-// HILFSFUNKTIONEN FÜR WARENKORB & BESTELLUNG
+// HILFSFUNKTIONEN: PRODUKTE NACH ID-LISTE LADEN
 // -----------------------------------------------------------------------------
 /** 
 * Holt alle Produkte zu einer Liste von produkt_id-Werten. 
@@ -128,6 +129,11 @@ function getProductsByIds(mysqli $conn, array $ids): array {
     $inList = implode(',', $cleanIds);
 
     $sql = "SELECT * FROM produkte WHERE produkt_id IN ($inList)";
+    $result = $conn->query($sql);
+
+    if (!$result) {
+        return [];
+    }
 
     $produkte = [];
     while ($row = $result->fetch_assoc()) {
@@ -150,11 +156,12 @@ function calculateCartTotal(mysqli $conn, array $cart): float {
 
     $produkte = getProductsByIds($conn, array_keys($cart));
 
-    foreach ($cart as $produktId => $menge) {
-        if (isset($produkte[$produktId])) {
-            $preis = (float) $produkte[$produktId]['preis'];
-            $total += $preis * (int) $menge;
-        }
+    foreach ($cart as $product_id => $quantity) {
+        if (!isset($produkte[$product_id])) {
+            continue;
+        } 
+        $preis = (float) $produkte[$product_id]['preis'];
+        $total += $preis * (int) $quantity;
     }
 
     return $total;
@@ -172,7 +179,7 @@ function calculateCartTotal(mysqli $conn, array $cart): float {
  * - null bei Fehler
  */
 function createOrder(mysqli $conn, int $benutzerId, array $cart, array $produkte): ?int {
-    if (emty($cart)) {
+    if (empty($cart)) {
         return null;
     }
 
@@ -231,6 +238,63 @@ function createOrder(mysqli $conn, int $benutzerId, array $cart, array $produkte
     return $bestellId;
 }
 
+// -----------------------------------------------------------------------------
+// BESTELLUNG ANLEGEN (Crear pedido en BD)
+// -----------------------------------------------------------------------------
+
+/**
+ * Berechnet den Gesamtpreis des aktuellen Warenkorbs.
+ */
+function calculateTotal($conn) {
+    $cart = getCart();
+    $total = 0;
+
+    foreach ($cart as $product_id => $quantity) {
+        $stmt = $conn->prepare("SELECT preis FROM produkte WHERE produkt_id = ?");
+        $stmt->bind_param("i", $product_id);
+        $stmt->execute();
+        $row = $stmt->get_result()->fetch_assoc();
+
+        if ($row) {
+            $total += ($row['preis'] * $quantity);
+        }
+    }
+
+    return $total;
+}
+
+/**
+ * Erstell einen neuen Eintrag in der Tabelle 'bestellugen'.
+ */
+function createOrder($conn, $benutzer_id, $gesamtpreis) {
+    $stmt = $conn->prepare("INSERT INTO bestellungen (benutzer_id, Gesamtpreis) VALUES (?, ?)");
+    $stmt->bind_param("id", $benutzer_id, $gesamtpreis);
+    $stmt->execute();
+
+    return $conn->insert_id; // ID der neu erstellen Bestellung
+}
+
+/**
+ * Speichert jede Warenkorb-position in 'bestellpositionen'.
+ */
+function saveOrderItems($conn, $bestell_id) {
+    $cart = getCart();
+
+    foreach ($cart as $product_id => $quantity) {
+        // Preis abrufen
+        $stmt = $conn->prepare("SELECT preis FROM produkte WHERE produkt_id = ?");
+        $stmt->bind_param("i", $product_id);
+        $stmt->execute();
+        $row = $stmt->get_result()->fetch_assoc();
+        $preis = $row['preis'];
+
+        // Position speichern
+        $stmt2 = $conn->prepare("INSERT INTO bestellpositionen (bestell_id, produkt_id, Menge, Stueckpreis)
+        VALUES (?, ?, ?, ?) ");
+        $stmt->bind_param("iiid", $bestell_id, $product_id, $quantity, $preis);
+        $stmt2->execute();
+    }
+}
 
 
 
