@@ -1,0 +1,180 @@
+/* ===== KONTAKT SEITE STYLES ===== */
+/* Alle Styles für die Kontaktseite */
+
+/* Seitenbereich */
+.page-section {
+    padding: 60px 0;
+    background-color: #fff;
+}
+
+/* Seiten-Header */
+.page-header {
+    text-align: center;
+    margin-bottom: 50px;
+    padding-bottom: 30px;
+    border-bottom: 2px solid #f8c7cc;
+}
+
+.page-header h1 {
+    font-size: 36px;
+    color: #333;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+.page-header p {
+    font-size: 18px;
+    color: #666;
+    font-style: italic;
+}
+
+/* Kontakt-Inhaltscontainer */
+.contact-content {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* Kontakt-Informationen Wrapper */
+.contact-info-wrapper {
+    background: white;
+    padding: 50px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(230, 168, 179, 0.15);
+    border: 1px solid rgba(230, 168, 179, 0.3);
+}
+
+/* Kontakt-Informationen Titel */
+.contact-info-wrapper h2 {
+    color: #333;
+    font-size: 28px;
+    margin-bottom: 40px;
+    text-align: center;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #e6a8b3;
+}
+
+/* Kontakt-Informationen Grid */
+.contact-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    margin-bottom: 50px;
+}
+
+/* Einzelnes Kontakt-Element */
+.info-item {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    padding: 20px;
+    background: #fafafa;
+    border-radius: 12px;
+    border: 1px solid #f0f0f0;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+/* Hover-Effekt für Kontakt-Elemente */
+.info-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(230, 168, 179, 0.2);
+}
+
+/* Kontakt-Icons */
+.contact-icon {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    margin-top: 5px;
+}
+
+/* Kontakt-Element Überschriften */
+.info-item h3 {
+    color: #333;
+    font-size: 18px;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+/* Kontakt-Element Text */
+.info-item p {
+    color: #555;
+    font-size: 15px;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Karten-Platzhalter */
+.map-placeholder {
+    background: linear-gradient(135deg, #f9f0f2 0%, #f5e6ea 100%);
+    padding: 40px;
+    border-radius: 15px;
+    text-align: center;
+    border: 2px dashed #e6a8b3;
+}
+
+/* Karten-Informationen */
+.map-info h3 {
+    color: #333;
+    font-size: 22px;
+    margin-bottom: 15px;
+}
+
+.map-info p {
+    color: #666;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+/* Tablets und kleinere Bildschirme */
+@media (max-width: 768px) {
+    .contact-info-wrapper {
+        padding: 30px;
+    }
+    
+    .page-header h1 {
+        font-size: 28px;
+    }
+    
+    .contact-info {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .info-item {
+        padding: 15px;
+    }
+    
+    .map-placeholder {
+        padding: 30px;
+    }
+}
+
+/* Mobile Geräte */
+@media (max-width: 480px) {
+    .page-section {
+        padding: 40px 0;
+    }
+    
+    .contact-info-wrapper {
+        padding: 20px;
+    }
+    
+    .contact-info-wrapper h2 {
+        font-size: 24px;
+    }
+    
+    .info-item {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+    }
+    
+    .contact-icon {
+        margin: 0 auto;
+    }
+    
+    .map-placeholder {
+        padding: 20px;
+    }
+}

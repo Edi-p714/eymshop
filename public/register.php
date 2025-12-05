@@ -11,7 +11,6 @@ require_once '../includes/db.php';
 
 // Header & Navigation einbinden
 require_once '../includes/header.php';
-require_once '../includes/navigation.php';
 ?>
 
 <!DOCTYPE html>

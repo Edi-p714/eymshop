@@ -6,7 +6,7 @@
     margin: 0 auto;
     padding: 20px;
     min-height: 70vh;
-    display: flex;
+    display: none;
     justify-content: center;
     align-items: center;
 }

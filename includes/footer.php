@@ -1,30 +1,48 @@
-<!-- includes/footer.php -->
-<footer class="footer">
-    <div class="footer-content">
-        <div class="footer-section">
-            <h3>Kontakt</h3>
-        </div>
+        </div> <!-- Container Ende -->
+    </main> <!-- Hauptinhalt Ende -->
 
-        <div class="footer-section">
-            <ul>
-                <li><a href="#">0176767676</a></li>
-                <li><a href="#">Edmshop@gmai.com</a></li>
-                <li><a href="#">Hannover 30455</a></li>
-            </ul>
-        </div>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                
+                <!-- Linke Spalte: Rechtliches -->
+                <div class="footer-section">
+                    <h3>Rechtliches</h3>
+                    <ul>
+                        <li><a href="/eymshop/public/datenschutz.php">Datenschutz</a></li>
+                        <li><a href="/eymshop/public/impressum.php">Impressum</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Mittlere Spalte: EYMShop & Beschreibung -->
+                <div class="footer-section footer-center">
+                    <div class="footer-logo">EYMShop</div>
+                    <p class="footer-description">
+                        Ihr Online-Shop für modische Bekleidung. 
+                        Qualität, Stil und Kundenzufriedenheit stehen bei uns an erster Stelle.
+                    </p>
+                </div>
+                
+                <!-- Rechte Spalte: Kontakt -->
+                <div class="footer-section">
+                    <h3>Kontakt</h3>
+                    <div class="contact-info">
+                        <p>Musterstraße 123</p>
+                        <p>30159 Hannover</p>
+                        <p>+49 511 123456</p>
+                        <p>info@eymshop.de</p>
+                        <p>Mo-Fr: 9:00-18:00 Uhr</p>
+                    </div>
+                </div>
+                
+            </div>
 
-        <div class="footer-section">
-            <h3>Folgen Sie uns:</h3>
+            <!-- Copyright -->
+            <div class="footer-bottom">
+                <p>&copy; <?php echo date('Y'); ?> EYMShop. Alle Rechte vorbehalten.</p>
+            </div>
         </div>
-
-        <div class="footer-section">
-            <p>Instagram.com/Edmshop</p>
-            <p>x.com/Edmshop</p>
-        </div>
-    </div>
-
-    <div class="footer-bottom">
-        <p>Datenschütz</p>
-        <p>Alle Rechte vorbehalten © 2025 Edmshop</p>
-    </div>
-</footer>
+    </footer>
+</body>
+</html>
