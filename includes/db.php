@@ -6,6 +6,7 @@ Host: localhost
 Benutzername: root
 Passwort: root (Standard in MAMP)
 Datenbank: Eymshop
+Port: 8889
 */
 
 $servername = 'localhost';
@@ -23,7 +24,7 @@ if ($conn->connect_error) {
     die("Verbindung zur Datenbank fehlgeschlagen: .$conn->connect_error");
 }
 
-// UTF-8 Unterstützung setzen (eichtig für Umlaute)
+// UTF-8 Unterstützung setzen (wichtig für Umlaute)
 $conn->set_charset("utf8mb4");
 
 ?>

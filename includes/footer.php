@@ -8,7 +8,7 @@
         <div class="footer-section">
             <ul>
                 <li><a href="#">0176767676 📞</a></li> <!-- Emoji telefon -->
-                <li><a href="#">Eymshop@gmai.com 📧</a></li> <!-- Emoji Gmail -->
+                <li><a href="#">Eymshop@gmail.com 📧</a></li> <!-- Emoji Gmail -->
                 <li><a href="#">Hannover 30455 📍</a></li> <!-- Emoji name ferestadan -->
             </ul>
         </div>
@@ -18,16 +18,15 @@
         </div>
 
         <div class="footer-section">
-             <ul>
+            <ul>
                 <li><a href="#">Instagram.com/Eymshop </a></li> <!-- Emoji Gmail -->
-                <li><a href="#">twitter.co.com/Eymshop</a></li>
+                <li><a href="#">twitter.com/Eymshop</a></li>
             </ul>
-           
         </div>
     </div>
 
     <div class="footer-bottom">
-        <p>Datenschütz</p>
+        <p>Datenschutz</p>
         <p>Alle Rechte vorbehalten © 2025 Eymshop</p>
     </div>
 </footer>
