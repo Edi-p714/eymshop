@@ -1,7 +1,9 @@
 <?php
 session_start();
-require_once '../includes/header.php';
-require_once '../includes/navigation.php';
+
+// E-Mail aus URL vorbefüllen (falls vorhanden)
+$prefilledEmail = $_GET['email'] ??'';
+$errorCode = $_GET['error'] ?? null;
 ?>
 
 <!DOCTYPE html>
@@ -14,24 +16,41 @@ require_once '../includes/navigation.php';
     <link rel="stylesheet" href="../assets/css/login-style.css">
 </head>
 <body>
+
+<?php 
+// Header einbinden
+require_once '../includes/header.php';
+?>
+
 <div class="container">
     <div class="login-page-container">
         <div class="login-container">
             <h2>Anmelden</h2>
 
-            <?php 
+            <?php
+            // Erfolg nach Registrierung
             if (isset($_GET['success'])) {
-                echo '<div class="message success-message">Registrierung erfolgreich! Bitte einloggen.</div>';
+                echo '<div class="message success-message" style="color: green; margin-bottom: 10px;">Registrierung erfolgreich! Bitte einloggen.</div>';
             } 
-            if (isset($_GET['error'])) {
-                echo '<div class="message error-message">Falsche E-Mail oder falsches Passwort.</div>';
-            } 
+
+            // Fehlermeldungen
+            if ($errorCode) {
+                $msg = 'Falsche E-Mail oder falsches Passwort.';
+
+                if ($errorCode === 'empty') {
+                    $smg = 'Bitte E-Mail und Passwort ausfüllen.';
+                } elseif ($errorCode === 'invalid') {
+                        $smg = 'Falsche E-Mail oder flasches Paswwort.';
+                    }
+                    echo '<div class="message error-message" style="color: red; margin-bottom: 10px">' . htmlspecialchars($msg) .'</div>';        
+            }
             ?>
 
             <form action="login_action.php" method="POST" class="login-form">
                 <div class="form-group">
                     <label for="email">E-Mail-Adresse</label>
-                    <input type="email" name="email" id="email" placeholder="ihre.email@beispiel.de" required>
+                    <input type="email" name="email" id="email" placeholder="ihre.email@beispiel.de" required
+                    value="<?php echo htmlspecialchars($prefilledEmail); ?>">
                 </div>
 
                 <div class="form-group">
@@ -39,21 +58,11 @@ require_once '../includes/navigation.php';
                     <input type="password" name="passwort" id="passwort" placeholder="Ihr Passwort" required>
                 </div>
 
-                <div class="form-options">
-                    <div class="remember-me">
-                        <input type="checkbox" id="remember" name="remember">
-                        <label for="remember">Angemeldet bleiben</label>
-                    </div>
-                    <div class="forgot-password">
-                        <a href="#" class="forgot-link">Passwort vergessen?</a>
-                    </div>
-                </div>
-
-                <button type="submit" class="login-button">Anmelden</button>
+                <button type="submit"class="login-button">Anmelden</button>
             </form>
 
             <div class="register-link">
-                <p>Haben Sie noch kein Konto? <a href="register.php">Jetzt registrieren</a></p>
+                <p>Noch kein Konto? <a href="register.php">Jetzt registrieren</a></p>
             </div>
         </div>
     </div>

@@ -1,18 +1,42 @@
+<?php
+// Session nur einmal starten, bevor HTML ausgegeben wird
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+?>
+
 <!-- includes/header.php -->
 <header class="header">
     <div class="logo">
-        <img src="../assets/image/logonew.jpg" alt="Logo" class="logo-img">
+        <a href="../public/index.php">
+        <img src="../assets/images/logonew.jpg" alt="EymShop Logo" class="logo-img">
+        </a>  
     </div>
 
-    <?php include 'navigation.php'; ?>
+    <?php
+    // Navigation relativ zum includes-Verzeichnis einbinden
+    require_once __DIR__ . '/navigation.php';
+    ?>
 </header>
 
 <!-- SEARCH + Nutzer Konto + Warenkorb -->
 <div class="search-container">
     <input type="text" class="search-box" placeholder="Produkte suchen...">
     <div class="user-cart-container">
-        <a href="anmeldung.html" class="login-link" id="userDisplay">Nutzer Konto</a>
-        <a href="warenkorb.html" class="cart-link" title="Warenkorb"></a>
+        <?php
+        // Überprüfen, ob der Benutzer eingeloggt ist
+        if (isset($_SESSION['benutzer_id'])) {
+        ?>
+            <a href="profile.php" class="login-link">Mein Profil</a>
+            <a href="logout.php" class="login-link" style="font-size: 0.8em;">(Logout)</a>
+            <?php
+            } else {
+            ?>
+            <a href="login.php" class="login-link">Anmelden / Konto</a>
+            <?php
+            }
+            ?>
+            <a href="warenkorb.php" class="cart-link" title="Warenkorb"><span class="cart-icon">🛒</span></a>
     </div>
 </div>
 

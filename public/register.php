@@ -5,13 +5,6 @@ ini_set('display_errors', 1);
 
 // Session starten
 session_start();
-
-// Datenbankverbindung
-require_once '../includes/db.php';
-
-// Header & Navigation einbinden
-require_once '../includes/header.php';
-require_once '../includes/navigation.php';
 ?>
 
 <!DOCTYPE html>
@@ -24,30 +17,34 @@ require_once '../includes/navigation.php';
     <link rel="stylesheet" href="../assets/css/register-style.css">
 </head>
 <body>
+
+<?php
+require_once '../includes/header.php';
+?>   
+
 <div class="container">
     <div class="register-page">
         <h1 class="register-title">Konto erstellen</h1>
         <p class="register-subtitle">Treten Sie EYMShop bei und entdecken Sie eine großartige Auswahl an Produkten</p>
 
         <!-- Fehlermeldungen -->
-        <?php 
-        if (isset($_GET['error'])) {
-            $error = $_GET['error'];
-            $msg = '';
-            switch ($error) {
-                case 'empty': $msg = 'Alle Felder müssen ausgefüllt werden.'; break;
-                case 'email_exists': $msg = 'Diese E-Mail existiert bereits.'; break;
-                case 'password': $msg = 'Passwort muss mindestens 6 Zeichen haben.'; break;
-                case 'password_mismatch': $msg = 'Passwörter stimmen nicht überein.'; break;
-                case 'terms': $msg = 'Bitte akzeptieren Sie die Nutzungsbedingungen.'; break;
-                default: $msg = 'Ein Fehler ist aufgetreten.';
-            }
-            echo '<div class="error-message">' . $msg . '</div>';
-        }
-        if (isset($_GET['success'])) {
-            echo '<div class="success-message">Registrierung erfolgreich! Bitte einloggen.</div>';
-        }
-        ?>
+        <?php if (isset($_GET['error'])): ?>
+            <div class="error-message" style="color: red; margin-bottom: 15px;">
+                <?php
+                $error = $_GET['error'];
+                // Fehlercodes Übersetzen
+                switch ($error) {
+                    case 'empty': $msg = 'Alle Felder müssen ausgefüllt werden.'; break;
+                    case 'email_exists': $msg = 'Diese E-Mail existiert bereits.'; break;
+                    case 'password': $msg = 'Passwort muss mindestens 6 Zeichen haben.'; break;
+                    case 'password_mismatch': $msg = 'Passwörter stimmen nicht überein.'; break;
+                    case 'terms': $msg = 'Bitte akzeptieren Sie die Nutzungsbedingungen.'; break;
+                    default: $msg = 'Ein Fehler ist aufgetreten.';
+                }
+                ?>
+            </div>
+        <?php endif; ?>
+    
 
         <form action="register_action.php" method="POST" class="register-form" id="registerForm">
             <div class="form-group">
@@ -87,37 +84,13 @@ require_once '../includes/navigation.php';
 
 <script>
 document.getElementById('registerForm').addEventListener('submit', function(event) {
-    const name = document.getElementById('name').value.trim();
-    const email = document.getElementById('email').value.trim();
     const password = document.getElementById('passwort').value;
     const confirmPassword = document.getElementById('passwort_confirm').value;
-    const terms = document.getElementById('terms').checked;
-
-    if (!name || !email || !password || !confirmPassword) {
-        event.preventDefault();
-        alert('Bitte füllen Sie alle Pflichtfelder aus.');
-        return false;
-    }
-
-    if (!terms) {
-        event.preventDefault();
-        alert('Bitte akzeptieren Sie die Nutzungsbedingungen.');
-        return false;
-    }
-
-    if (password.length < 6) {
-        event.preventDefault();
-        alert('Passwort muss mindestens 6 Zeichen lang sein.');
-        return false;
-    }
 
     if (password !== confirmPassword) {
         event.preventDefault();
         alert('Passwörter stimmen nicht überein.');
-        return false;
     }
-
-    return true;
 });
 </script>
 
