@@ -1,0 +1,120 @@
+
+.detail-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    margin-top: 30px;
+    margin-top: 20px;
+    margin-bottom: 50px;
+    background: #fff;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+}
+
+.detail-image-container {
+    flex: 1;
+    min-width: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid #eee;
+}
+
+.detail-img {
+    max-width: 100%;
+    height: auto;
+    max-height: 500px;
+    object-fit: contain;
+}
+
+.detail-info-container {
+    flex: 1;
+    min-width: 300px;
+    padding: 10px;
+}
+
+.detail-title {
+    font-size: 1rem;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.detail-price {
+    font-size: 1.8rem;
+    color: #d48aa1;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.detail-description h3 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+
+.detail-description p {
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.color-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+.color-bagde {
+    background-color: #f0f0f0;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    border: 1px solid #ddd;
+}
+
+.btn-large {
+    padding: 15px 30px;
+    font-size: 1.1rem;
+    width: 100%;
+    display: block;
+    text-align: center;
+    margin-bottom: 15px;
+    background-color: #333;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+}
+
+.btn-large:hover {
+    background-color: #e6a8b3;
+    transform: translateY(-2px);
+}
+
+.back-link {
+    display: block;
+    text-align: center;
+    color: #666;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.back-link:hover {
+    color: #333;
+    text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .detail-wrapper {
+        flex-direction: column;
+        padding: 15px;
+    }
+
+
+}

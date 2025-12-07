@@ -27,4 +27,3 @@ if ($conn->connect_error) {
 // UTF-8 Unterstützung setzen (wichtig für Umlaute)
 $conn->set_charset("utf8mb4");
 
-?>
