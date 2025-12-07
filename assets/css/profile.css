@@ -1,0 +1,75 @@
+.profile-card {
+    background: #fff;
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.8);
+    text-align: center;
+    border: 1px solid #eee;
+}
+
+.profile-icon {
+    font-size: 80px;
+    margin-bottom: 20px;
+    display: block;
+}
+
+.product-card h1 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.product-card p {
+    font-size: 16px;
+    margin-bottom: 30px;
+}
+
+.profile-info {
+    margin: 20px 0;
+    text-align: left;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+info.row {
+    padding: 12px 0;
+    border-bottom: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: space-between;
+    font-size: 16px;
+}
+
+.info.row:last-child {
+    border-bottom: none;
+}
+
+.info-label {
+    font-weight: bold;
+    color: #555;
+}
+
+.info-value {
+    color: #000;
+    font-weight: 500;
+}
+
+/* Bottom Logout */
+.logout-btn {
+    display: inline-block;
+    background-color: #333;
+    color: #fff;
+    padding: 12px 30px;
+    text-decoration: none;
+    border-radius: 30px;
+    margin-top: 25px;
+    transition: background 0.3s ease, transform 0.2s;
+    font-weight: bold;
+}
+
+.logout-btn:hover {
+    background-color: #d63384;
+    trnsform: translateY(-2px);
+}
