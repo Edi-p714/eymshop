@@ -4,9 +4,30 @@ require_once '../includes/db.php';
 require_once '../includes/functions.php';
 
 $kategorie_filter = isset($_GET['kategorie']) ? $_GET['kategorie'] : null;
+$search_query = isset($_GET['s']) ?
+trim($_GET['s']) : null;
 $produkte = [];
+$titleSeitet = "Produkte";
 
-if ($kategorie_filter) {
+
+if ($search_query) {
+    // CASO 1: BÚSQUEDA ACTIVADA (?s=...)
+    $titleSeitet = "Suchergebnisse für: \"" . htmlspecialchars($search_query) . "\"";
+    
+    // Usamos LIKE con % para buscar coincidencias parciales
+    $sql = "SELECT * FROM produkte WHERE produktname LIKE ? OR produktbeschreibung LIKE ?";
+    $stmt = $conn->prepare($sql);
+    
+    // Agregamos los % para SQL
+    $searchTerm = "%" . $search_query . "%";
+    $stmt->bind_param("ss", $searchTerm, $searchTerm); // Busca en Nombre O Descripción
+    $stmt->execute();
+    $produkte = $stmt->get_result();
+
+} elseif ($kategorie_filter) {
+    // CASO 2: FILTRO POR CATEGORÍA (?kategorie=...)
+    $titleSeitet = "Kategorie: " . htmlspecialchars($kategorie_filter);
+    
     $sql_kat = "SELECT kategorie_id FROM kategorien WHERE kategoriename = ?";
     $stmt_kat = $conn->prepare($sql_kat);
     $stmt_kat->bind_param("s", $kategorie_filter);
@@ -22,10 +43,13 @@ if ($kategorie_filter) {
         $stmt->execute();
         $produkte = $stmt->get_result();
     } else {
+        // Categoría no encontrada
         $produkte = getAllProducts($conn);
     }
     $stmt_kat->close();
+
 } else {
+    // CASO 3: NADA (Mostrar todo)
     $produkte = getAllProducts($conn);
 }
 ?>
@@ -44,12 +68,7 @@ if ($kategorie_filter) {
     <?php include '../includes/header.php'; ?>
     
     <h2>
-        <?php 
-        if ($kategorie_filter) {
-            echo "kategorie: " . htmlspecialchars($kategorie_filter);
-        } else {
-            echo "Alle Produkte";
-        } ?>
+        <?php echo $titleSeitet; ?>
     </h2>
 
     <div class="produkt-grid">

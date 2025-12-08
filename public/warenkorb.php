@@ -105,7 +105,7 @@ if (function_exists('getCart')) {
         <td><?php echo $quantity; ?></td>
         <td style="font-weight: bold;"><?php echo number_format($gesamt, 2, ',', '.'); ?></td>
         <td>
-            <a href="warenkorb.php?remove=<?php echo $product_id; ?>" class="btn-remove" title="Entfernen"></a>
+            <a href="warenkorb.php?remove=<?php echo $product_id; ?>" class="btn-remove" title="Entfernen">✖</a>
         </td>
     </tr>
 
