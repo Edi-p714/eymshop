@@ -11,17 +11,26 @@ Port: 8889
 
 $servername = 'localhost';
 $username = 'root';
-$password = '';
 $dbname = "Eymshop";
+
+// XAMPP / WINDOWS
+$password = '';
 $port = 3306;
 
+$conn = @new mysqli($servername, $username, $password, $dbname, $port);
 
-// Verbindung herstellen
-$conn = new mysqli($servername, $username, $password, $dbname, $port);
-
-// Fehlerprüfung
 if ($conn->connect_error) {
-    die("Verbindung zur Datenbank fehlgeschlagen: .$conn->connect_error");
+    $password = 'root';
+    $port = 8889;
+
+    // Verbindung herstellen
+    $conn = new mysqli($servername, $username, $password, $dbname, $port);
+
+    // Fehlerprüfung
+    if ($conn->connect_error) {
+        die("Verbindung zur Datenbank fehlgeschlagen: .$conn->connect_error");
+    }
+
 }
 
 // UTF-8 Unterstützung setzen (wichtig für Umlaute)
