@@ -1,0 +1,123 @@
+/* assets/css/kontakt.css */
+
+.contact-wrapper {
+    max-width: 800px;
+    margin: 40px auto;
+    background: #fff;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+    border: 1px solid #eee;
+}
+
+.contact-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.contact-header h1 {
+    color: #333;
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.contact-header p {
+    color: #666;
+}
+
+/* --------------------------- */
+/*        FORMULAR STYLES      */
+/* --------------------------- */
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* ✔ ورژن اصلاح‌شده با رنگ ملایم */
+.form-input, 
+.form-textarea {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #eee;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: border-color 0.3s, background-color 0.3s;
+
+    /* ⭐ رنگ پس‌زمینه ملایم، دیگر سفید مطلق نیست */
+    background-color: #fff5f7;
+}
+
+/* ⭐ هنگام فوکوس کمی پررنگ‌تر شود */
+.form-input:focus, 
+.form-textarea:focus {
+    outline: none;
+    border-color: #e6a8b3; /* رنگ برند */
+    background-color: #ffe9ef;
+}
+
+.form-textarea {
+    height: 150px;
+    resize: vertical;
+}
+
+.btn-send {
+    background-color: #333;
+    color: #fff;
+    border: none;
+    padding: 15px 30px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border-radius: 50px;
+    cursor: pointer;
+    width: 100%;
+    transition: background 0.3s;
+}
+
+.btn-send:hover {
+    background-color: #e6a8b3;
+}
+
+/* --------------------------- */
+/*    SUCCESS MESSAGE          */
+/* --------------------------- */
+.success-msg {
+    background-color: #d4edda;
+    color: #155724;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    text-align: center;
+    border: 1px solid #c3e6cb;
+}
+
+/* --------------------------- */
+/*    CONTACT INFO BOXES       */
+/* --------------------------- */
+.contact-info {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    text-align: center;
+}
+
+.info-item {
+    margin: 10px;
+    color: #555;
+}
+
+.info-icon {
+    font-size: 1.5rem;
+    display: block;
+    margin-bottom: 5px;
+}
