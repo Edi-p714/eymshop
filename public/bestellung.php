@@ -1,57 +1,103 @@
 <?php 
-// -----------------------------------------------------------------------------
-// bestellung.php – Bestellung anlegen & Zusammenfassung anzeigen
-// -----------------------------------------------------------------------------
+ob_start();
+session_start();
 
-require_once '../includes/header.php';
-require_once '../includes/navigation.php'; 
 require_once '../includes/db.php';
 require_once '../includes/functions.php';
 
-// Sicherstellen, dass die Session läuft (falls nicht schon header.php)
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
 
 // Benutzer eingeloggt-Check
 if (!isset($_SESSION['benutzer_id'])) {
     // Falls du einen anderen key verwendest (z.B user_id), hier anpassen
-    header('Location: login.php');
+    header("Location: login.php?error=login_required");
     exit;
 }
 
-$benutzerId = (int) $_SESSION['benutzer-id'];
-
 // Warenkorb holen
 $cart = getCart();
-
 if (empty($cart)) {
-    echo "<h2>Ihr Warenkorb ist leer.</h2>";
-    require_once '../includes/footer.php';
-    exit();
+    header("Location: produkte.php");
+    exit;
 }
 
 // Produkte anhand der IDs laden (für Preis, Name usw.)
-$produkte = getProductsByIds($conn, array_keys($cart));
+$ids = array_keys($cart);
+$produkte = getProductsByIds($conn, $ids)
+;
+$gesamtSumme = calculateCartTotal($conn, $cart);
 
-// Bestellung anlagen (intkl. Bestellpositionen)
-$bestell_id = createOrder($conn, $benutzer_id, $cart, $gesamtpreis);
-if ($bestell_id === null) {
-    echo "<h2>Fehler: Bestellung konnte nicht gespeichert werden.</h2>";
-    require_once '../includes/footer.php';
-    exit();
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $userId = $_SESSION['benutzer_id'];
+
+    $bestellid = createOrder($conn, $userId, $cart, $produkte);
+
+    if ($bestellid) {
+        clearCart();
+        header("Location: bestellung_danke.php?id=$bestellId");
+        exit;
+    } else {
+        $error = "Fehler bei der Bestellung. Bitte versuchen Sie es erneut.";
+    }
 }
-
-// Warenkorb leerem
-clearCart();
 ?>
 
-<h2>Vielen Dank für Ihre Bestellung!</h2>
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bestellung Zusammenfassung</title>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <link rel="stylesheet" href="../assets/css/bestellung.css">
+</head>
+<body>
 
-<p>Ihre Bestellnummer lautet: <strong><?php echo (int)$bestell_id; ?></strong></p>
+<div class="container">
+    <?php require_once '../includes/header.php'; ?>
 
-<p>
-<a href="index.php" class="btn">weiter einkaufen</a>
-</p>
+    <div class="checkout-container">
+        <h1 class="checkout-title">Bestellung abschließen</h1>
 
-<?php require_once '../includes/footer.php'; ?>
+        <?php if (isset($error)): ?>
+            <div class="error-box">
+                <?php echo htmlspecialchars($error); ?>
+            </div>
+        <?php endif; ?>
+
+        <h3>Zusammenfassung</h3>
+
+        <?php foreach ($cart as $id => $qty):
+            if (!isset($produkte[$id])) continue;
+            $p = $produkte[$id];
+            $subtotal = $p['preis'] * $qty;
+        ?>
+
+            <div class="order-row">
+                <span><?php echo $qty; ?> X <?php echo htmlspecialchars($p['produktname']); ?></span>
+                <span><?php echo number_format($subtotal, 2, ',', '.'); ?> € </span>
+            </div>
+        <?php endforeach; ?>
+
+        <div class="order-total">
+            <span><?php echo number_format($gesamtSumme, 2, ',', '.'); ?> €</span>
+        </div>
+
+        <form method="POST" action="">
+            <p class="legal-text">
+                Mit Ihrer Bestellung erklären Sie sich mit unseren AGB und Datenschutzbestimmung en einverstanden.
+            </p>
+            <button type="submit" class="btn-confirm">Kostenplichtig bestellen</button>
+        </form>
+
+        <div class="back-link-container">
+            <a href="warenkorb.php">← Zurück zum Warenkorb</a>
+        </div>
+    </div>
+    <?php require_once '../includes/footer.php'; ?>
+</div>
+
+</body>
+</html>
+<?php ob_end_flush(); ?>
+
+
