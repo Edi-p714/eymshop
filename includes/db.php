@@ -11,9 +11,9 @@ Port: 8889
 
 $servername = 'localhost';
 $username = 'root';
-$password = 'root';
+$password = '';
 $dbname = "Eymshop";
-$port = 8889;
+$port = 3306;
 
 
 // Verbindung herstellen

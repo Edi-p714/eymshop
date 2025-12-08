@@ -246,3 +246,13 @@ body {
     }
 
 }
+.footer-bottom {
+    text-align: center;  /* وسط چین کردن متن */
+    margin-top: 20px;
+    color: #555;        /* رنگ متن اختیاری */
+    font-size: 0.9rem;  /* اندازه فونت اختیاری */
+}
+
+.footer-bottom p {
+    margin: 5px 0;      /* فاصله عمودی بین پاراگراف‌ها */
+}

@@ -26,7 +26,7 @@
     </div>
 
     <div class="footer-bottom">
-        <p>Datenschutz</p>
+        <p><a href="datenschutz.php" class="footer-link">Datenschutz</a></p>
         <p>Alle Rechte vorbehalten © 2025 Eymshop</p>
     </div>
 </footer>
