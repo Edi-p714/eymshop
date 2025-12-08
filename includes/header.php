@@ -21,7 +21,10 @@ if (session_status() === PHP_SESSION_NONE) {
 
 <!-- SEARCH + Nutzer Konto + Warenkorb -->
 <div class="search-container">
-    <input type="text" class="search-box" placeholder="Produkte suchen...">
+    <form action="produkte.php" method="GET" style="flex-grow: 1; display: flex; justify-content: center;">
+    <input type="text" name="s" class="search-box" placeholder="Produkte suchen..." value="<?php echo isset($_GET['s']) ? htmlspecialchars($_GET['s']) : '';  ?>">
+    </form>
+
     <div class="user-cart-container">
         <?php
         // Überprüfen, ob der Benutzer eingeloggt ist
