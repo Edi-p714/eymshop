@@ -40,7 +40,7 @@ session_start();
 
         <div class="product-card">
             <div class="product-image">
-                <a href="produkte.php?kategorie=Maedchen">
+                <a href="produkte.php?kategorie=Damen">
                 <img src="../assets/images/frauen_.jpg" alt="Damen Mode">
                 </a>
                 
@@ -53,7 +53,7 @@ session_start();
 
         <div class="product-card">
             <div class="product-image">
-                <a href="produkte.php?kategorie=Maedchen">
+                <a href="produkte.php?kategorie=Mädchen">
                 <img src="../assets/images/maedchen.jpg" alt="mädchen Mode">
                 </a>
                 
