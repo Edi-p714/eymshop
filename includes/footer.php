@@ -23,7 +23,7 @@
             <h3>Rechtliches</h3>
             <ul class="footer-links">
                 <li><a href="datenschutz.php">🔒 Datenschutz</a></li>
-                <li><a href="">⚖️ Impressum</a></li>
+                <li><a href="impressum.html">⚖️ Impressum</a></li>
             </ul>
         </div>
     </div>
