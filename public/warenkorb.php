@@ -93,7 +93,7 @@ if (function_exists('getCart')) {
         <td>
             <div style="display: flex; align-items: center; gap: 10px;">
                 <?php if (!empty($bildpath)): ?>
-                <img src="../<?php echo htmlspecialchars($p['hauptbild']);  ?>" class="cart-img" alt="Bild">
+                <img src="../<?php echo htmlspecialchars($bildpath);  ?>" class="cart-img" alt="Bild">
                 <?php else: ?>
                     <div class="cart-img" style="background: #eee; display: flex; align-items:center; justify-content:center;">📷</div>
                 <?php endif; ?>
