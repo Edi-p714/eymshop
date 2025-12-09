@@ -1,38 +1,47 @@
 <?php
-/* 
-Datenbankverbindung für MAMP
------------------------
-Host: localhost
-Benutzername: root
-Passwort: root (Standard in MAMP)
-Datenbank: Eymshop
-Port: 8889
-*/
+// includes/db.php
 
-$servername = 'localhost';
-$username = 'root';
-$dbname = "Eymshop";
+// Erkennung der Umgebung (lokal oder Produktion)
+$host = $_SERVER['HTTP_HOST'];
 
-// XAMPP / WINDOWS
-$password = '';
-$port = 3306;
+$isLocal = (strpos($host, 'localhost') !== false) || (strpos($host, '127.0.0.1') !== false);
 
-$conn = @new mysqli($servername, $username, $password, $dbname, $port);
+if ($isLocal) {
+    // Lokale Umgebung (Mac/Windows)
+    $servername = "localhost";
+    $dbname = "Eymshop"; 
 
-if ($conn->connect_error) {
-    $password = 'root';
-    $port = 8889;
+    mysqli_report(MYSQLI_REPORT_OFF);
 
-    // Verbindung herstellen
-    $conn = new mysqli($servername, $username, $password, $dbname, $port);
+    // Versuch 1: Windows/XAMPP
+    $conn = @new mysqli($servername, "root", "", $dbname, 3306);
 
-    // Fehlerprüfung
+    // Versuch 2: Mac/MAMP
     if ($conn->connect_error) {
-        die("Verbindung zur Datenbank fehlgeschlagen: .$conn->connect_error");
+        $conn = @new mysqli($servername, "root", "root", $dbname, 8889);
+        
+        if ($conn->connect_error) {
+            // Si ambos fallan, reactivamos errores y morimos
+            mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+            die("Local Connection Failed (XAMPP & MAMP): " . $conn->connect_error);
+        }
     }
 
+} else {
+    // Produktionsumgebung (Live-Server)
+
+    $servername = " ... "; 
+    $username   = " ... ";
+    $password   = " ... "; 
+    $dbname     = " ... "; 
+
+    $conn = new mysqli($servername, $username, $password, $dbname);
+
+    if ($conn->connect_error) {
+        die("Live Connection Failed: " . $conn->connect_error);
+    }
 }
 
-// UTF-8 Unterstützung setzen (wichtig für Umlaute)
+// Gemeinsame Einstellungen
 $conn->set_charset("utf8mb4");
-
+mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
