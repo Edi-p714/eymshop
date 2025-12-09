@@ -38,7 +38,7 @@ if (isset($_GET['add'])) {
     <div class="detail-wrapper">
         <div class="detail-image-container">
             <img class="detail-img"
-                src="../<?php htmlspecialchars($produkt['hauptbild']); ?>" 
+                src="../<?php echo htmlspecialchars($produkt['hauptbild']); ?>" 
                 alt="<?php echo htmlspecialchars($produkt['produktname']); ?>">
         </div>
 

@@ -29,12 +29,12 @@ if (!$user) {
 ?>
 
 <!DOCTYPE html>
-<html lang="de"><
+<html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profil von <?php echo htmlspecialchars($user['benutzername']); ?></title>
-    <link rel="stylesheet" href="../css/style.css">
+    <title>Profil von <?php echo htmlspecialchars($user['name']); ?></title>
+    <link rel="stylesheet" href="../assets/css/styles.css">
     <link rel="stylesheet" href="../assets/css/profile.css">
 </head>
 <body>
@@ -53,7 +53,9 @@ if (!$user) {
 
             <div class="info-row">
                 <span class="info-label">Name:</span>
-                <span class="info-value"></span><?php echo htmlspecialchars($user['name']); ?></span>
+                <span class="info-value">
+                <?php echo htmlspecialchars($user['name']); ?>
+                </span> 
             </div>    
 
             <div class="info-row">

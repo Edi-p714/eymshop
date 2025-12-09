@@ -15,9 +15,9 @@ require_once '../includes/db.php';
 </head>
 <body>
 
-<?php require_once '../includes/header.php'; ?>
 
 <div class="container">
+<?php require_once '../includes/header.php'; ?>
     <div class="uberuns-wrapper">
         <div class="uberuns-header">
             <h1>Über uns</h1>
@@ -53,9 +53,10 @@ require_once '../includes/db.php';
 
         <p>Vielen Dank, dass Sie EYMshop Ihr Vertrauen schenken!</p>
     </div> <!-- /ueberuns-wrapper -->
+    <?php require_once '../includes/footer.php'; ?>
 </div> <!-- /container -->
 
-<?php require_once '../includes/footer.php'; ?>
+
 
 </body>
 </html>
