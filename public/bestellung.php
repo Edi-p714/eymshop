@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($bestellid) {
         clearCart();
-        header("Location: bestellung_danke.php?id=$bestellId");
+        header("Location: bestellung_danke.php?id=$bestellid");
         exit;
     } else {
         $error = "Fehler bei der Bestellung. Bitte versuchen Sie es erneut.";
